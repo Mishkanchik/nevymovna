@@ -187,7 +187,7 @@ li {
   left: 50%;
   transform: translateX(-50%) scaleY(0);
   transform-origin: top;
-  background: #2d0900;
+  background: #000000;
   border-radius: 10px;
   padding: 10px 0;
   list-style: none;
@@ -214,7 +214,7 @@ li {
 
 .submenu li:hover {
 
-  background-color: #4b1200;
+  background-color: #161616;
 }
 
 /* показуємо підменю при наведенні */
@@ -269,7 +269,7 @@ li {
 
   .submenu {
     position: absolute;
-    background: #2d0900;
+    background: #000000;
     border-radius: 10px;
     padding: 10px 0;
     list-style: none;
