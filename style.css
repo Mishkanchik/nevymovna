@@ -243,7 +243,39 @@ li {
 
 
 
+@media (max-width: 768px) {
 
+  .telegram .submenu,
+  .tiktok .submenu {
+    left: 50%;
+    right: auto;
+    top: 100%;
+    /* під кнопкою */
+    transform: translateX(-50%) scaleY(0);
+    /* сховане за замовчуванням */
+    transform-origin: top;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .telegram:hover .submenu,
+  .tiktok:hover .submenu {
+    transform: translateX(-50%) scaleY(1);
+    /* показуємо при наведенні */
+  }
+
+  .submenu {
+    position: absolute;
+    background: #2d0900;
+    border-radius: 10px;
+    padding: 10px 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.6) 0px 8px 25px;
+    z-index: 100;
+    min-width: 100px;
+  }
+}
 
 @media screen and (max-width: 600px) {
   body {
@@ -257,7 +289,7 @@ li {
   .img-container {
     width: 50px;
     height: 50px;
-    box-shadow: rgba(0, 0, 0, 0.26) 0px 12px 30px 3px;
+
   }
 
   .content {
