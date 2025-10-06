@@ -4,7 +4,7 @@
 
 
 body {
-  background: linear-gradient(135deg, #421102, #723d01);
+  background-color: rgb(32, 32, 32);
   min-height: 100vh;
   margin: 0;
   display: flex;
@@ -38,7 +38,7 @@ li {
 .title-logo {
   font-family: "Shadows Into Light", cursive;
   font-size: 40px;
-  color: #723d01;
+  color: #ffffff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   margin-bottom: 20px;
   position: absolute;
@@ -105,7 +105,7 @@ li {
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.66) 0px 22px 70px 4px;
   text-align: center;
-  background-color: #5f1600;
+  background-color: #000000;
   border-radius: 20px;
 
   min-height: 300px;
