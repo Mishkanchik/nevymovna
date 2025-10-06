@@ -132,7 +132,7 @@ li {
   width: auto;
   height: 40px;
   font-family: "Shadows Into Light", cursive;
-
+  text-shadow: 3px 1px 0px rgba(0, 0, 0, 0.5);
 
   font-weight: 400;
   font-style: normal;
