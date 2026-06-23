@@ -1,380 +1,576 @@
-* {
-  box-sizing: border-box;
+/* ─── Tokens ───────────────────────────────────────────────────────────────── */
+:root {
+	--bg: #141414;
+	--panel: #1a1a1a;
+	--panel-2: #202020;
+	--edge: rgba(230, 221, 208, 0.08);
+	--edge-strong: rgba(230, 221, 208, 0.16);
+	--ink: #e9e1d2;
+	--ink-dim: rgba(233, 225, 210, 0.56);
+	--ink-faint: rgba(233, 225, 210, 0.32);
+	--rust: #d4794a;
+	--rust-soft: rgba(212, 121, 74, 0.45);
+	--rust-dim: rgba(212, 121, 74, 0.18);
+	--moss: #7a8a6f;
+	--violet: #8a7cf0;
+	--cyan: #4fc8e0;
 }
 
+* {
+	box-sizing: border-box;
+}
 
 body {
-  background-color: rgb(32, 32, 32);
-  min-height: 100vh;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-family: Arial, sans-serif;
+	background: var(--bg);
+	min-height: 100vh;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--ink);
+	font-family: "Manrope", sans-serif;
+	overflow-x: hidden;
+	position: relative;
 }
 
 a {
-  text-decoration: none;
-  background-color: transparent;
-
+	text-decoration: none;
+	color: inherit;
 }
 
-
 a:visited {
-  color: inherit;
+	color: inherit;
 }
 
 li {
-  padding: 10px 70px;
-  list-style: none;
-  font-size: 16px;
-  color: #ffffff;
-
-
-
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 
-.title-logo {
-  font-family: "Shadows Into Light", cursive;
-  font-size: 40px;
-  color: #ffffff;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  margin-bottom: 20px;
-  position: absolute;
-  left: 10px;
-  top: 10px;
+ul {
+	padding: 0;
+	margin: 0;
 }
 
-.button-29 {
-  list-style: none;
-  align-items: center;
-  appearance: none;
-  background-image: radial-gradient(100% 100% at 100% 0, #4f7492 0, #0c2442 100%);
-  border: 0;
-  border-radius: 6px;
-  box-shadow: rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, rgba(58, 65, 111, .5) 0 -3px 0 inset;
-  box-sizing: border-box;
-  color: #a0a6d4;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: "JetBrains Mono", monospace;
-  height: 35px;
-  justify-content: center;
-  line-height: 1;
-  list-style: none;
-  overflow: hidden;
-  padding-left: 15px;
-  padding-right: 15px;
-  margin: 5px;
-  position: relative;
-  text-align: left;
-  text-decoration: none;
-  transition: box-shadow .15s, transform .15s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  will-change: box-shadow, transform;
-  font-size: 15px;
-  text-transform: uppercase;
-  font-family: "Oswald", sans-serif;
-
+/* ─── Ambient backdrop ──────────────────────────────────────────────────────── */
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background:
+		radial-gradient(ellipse 60% 45% at 22% 20%, rgba(138, 124, 240, 0.05) 0%, transparent 60%),
+		radial-gradient(ellipse 55% 45% at 82% 82%, rgba(212, 121, 74, 0.05) 0%, transparent 60%),
+		radial-gradient(ellipse 90% 70% at 50% 50%, var(--bg) 0%, #0a0a0a 100%);
 }
 
-
-
-.button-29:focus {
-  box-shadow: none 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #9095bb 0 -3px 0 inset;
+#bg-canvas {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
 }
 
-.button-29:hover {
-  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #6a71a8 0 -3px 0 inset;
-  transform: translateY(-2px);
+body::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	opacity: 0.045;
+	mix-blend-mode: overlay;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.button-29:active {
-  box-shadow: #6a71a8 0 3px 7px inset;
-  transform: translateY(2px);
+/* ─── Stage ───────────────────────────────────────────────────────────────────── */
+.stage {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 28px 16px;
+	width: 100%;
 }
 
-
-
-
-.content {
-  position: relative;
-  box-shadow: rgba(0, 0, 0, 0.66) 0px 22px 70px 4px;
-  text-align: center;
-  background-color: #000000;
-  border-radius: 20px;
-
-  min-height: 300px;
-
-
+/* ─── Top mark ────────────────────────────────────────────────────────────────── */
+.mark {
+	position: fixed;
+	left: 24px;
+	top: 20px;
+	z-index: 5;
+	font-family: "Caveat", cursive;
+	font-size: 26px;
+	font-weight: 600;
+	color: var(--ink-dim);
+	letter-spacing: 0.01em;
+	animation: fadeIn 1s 0.15s both;
 }
 
-.nevymovna-logo {
-  margin-top: 40px;
-  width: 40%;
-  height: 100%;
-  border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.6) 0px 4px 25px;
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
 }
 
-.nevymovna-logo img {
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
-
+/* ─── Card ──────────────────────────────────────────────────────────────────── */
+.card {
+	position: relative;
+	width: min(480px, 92vw);
+	padding: 44px 36px 34px;
+	text-align: center;
+	background: linear-gradient(170deg, var(--panel-2) 0%, var(--panel) 100%);
+	border: 1px solid var(--edge);
+	border-radius: 20px;
+	box-shadow:
+		0 36px 90px -16px rgba(0, 0, 0, 0.8),
+		0 0 0 1px rgba(255, 255, 255, 0.015) inset;
+	/* КРИТИЧНО: Прибрано overflow: hidden, щоб випадаюче меню не обрізалося */
+	overflow: visible;
+	animation: cardIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.logo {
-  font-size: 30px;
-  margin-top: 10px;
-  width: auto;
-  height: 40px;
-  font-family: "Shadows Into Light", cursive;
-  text-shadow: 3px 1px 0px rgba(0, 0, 0, 0.5);
+@keyframes cardIn {
+	from {
+		opacity: 0;
+		transform: translateY(26px) scale(0.97);
+	}
 
-  font-weight: 400;
-  font-style: normal;
+	to {
+		opacity: 1;
+		transform: none;
+	}
 }
 
-
-.social-networks {
-
-  margin: 40px auto 80px auto;
-  width: 550px;
-
-
-  display: flex;
-  justify-content: space-evenly;
+/* Окрема обгортка для обрізання декоративної лінії */
+.card-decor-clip {
+	position: absolute;
+	inset: 0;
+	border-radius: 20px;
+	overflow: hidden;
+	pointer-events: none;
+	z-index: 0;
 }
 
+.ink-trace {
+	position: absolute;
+	left: 0;
+	top: 14%;
+	width: 100%;
+	height: 90px;
+	opacity: 0.5;
+}
+
+.ink-trace__path {
+	fill: none;
+	stroke: var(--rust-soft);
+	stroke-width: 1.4;
+	stroke-linecap: round;
+	stroke-dasharray: 18 14;
+	animation: ink-flow 11s linear infinite;
+}
+
+@keyframes ink-flow {
+	to {
+		stroke-dashoffset: -640;
+	}
+}
+
+/* ─── Portrait ────────────────────────────────────────────────────────────────── */
+.portrait {
+	position: relative;
+	z-index: 1;
+	width: 132px;
+	height: 132px;
+	margin: 0 auto 24px;
+	border-radius: 50%;
+	padding: 3px;
+	background: conic-gradient(from 200deg, var(--rust-soft), transparent 30%, transparent 70%, var(--moss) 85%, var(--rust-soft));
+}
+
+.portrait img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 50%;
+	display: block;
+	box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.75);
+	filter: saturate(0.85) contrast(1.05) brightness(0.96);
+	background: var(--panel);
+}
+
+/* ─── Eyebrow + wordmark ──────────────────────────────────────────────────────── */
+.eyebrow {
+	position: relative;
+	z-index: 1;
+	font-size: 11px;
+	letter-spacing: 0.14em;
+	text-transform: lowercase;
+	color: var(--ink-faint);
+	margin: 0 0 6px;
+	animation: fadeUp 0.7s 0.15s both;
+}
+
+.wordmark {
+	position: relative;
+	z-index: 1;
+	font-family: "Caveat", cursive;
+	font-size: 52px;
+	font-weight: 600;
+	line-height: 1;
+	color: var(--ink);
+	margin: 0;
+	animation: fadeUp 0.7s 0.22s both;
+}
+
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* ─── Rule ────────────────────────────────────────────────────────────────────── */
+.rule {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 28px 0 26px;
+	animation: fadeUp 0.7s 0.3s both;
+}
+
+.rule::before,
+.rule::after {
+	content: "";
+	flex: 1;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, var(--edge-strong));
+}
+
+.rule::after {
+	background: linear-gradient(90deg, var(--edge-strong), transparent);
+}
+
+.rule span {
+	flex-shrink: 0;
+	padding: 0 14px;
+	font-size: 10px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+}
+
+/* ─── Links row ───────────────────────────────────────────────────────────────── */
+.links {
+	position: relative;
+	z-index: 3;
+	display: flex;
+	justify-content: center;
+	gap: 16px;
+	margin: 0 0 6px;
+}
+
+.link-bare {
+	display: block;
+}
+
+.link {
+	position: relative;
+	width: 60px;
+	height: 60px;
+	border-radius: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(233, 225, 210, 0.035);
+	border: 1px solid var(--edge);
+	color: var(--ink-dim);
+	cursor: pointer;
+	transition:
+		transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+		border-color 0.3s ease,
+		color 0.3s ease,
+		box-shadow 0.3s ease;
+	animation: fadeUp 0.6s both;
+}
+
+.links>*:nth-child(1) {
+	animation-delay: 0.36s;
+}
+
+.links>*:nth-child(2) {
+	animation-delay: 0.42s;
+}
+
+.links>*:nth-child(3) {
+	animation-delay: 0.48s;
+}
+
+.links>*:nth-child(4) {
+	animation-delay: 0.54s;
+}
+
+.link-icon {
+	width: 23px;
+	height: 23px;
+	display: flex;
+	pointer-events: none;
+}
+
+.link-icon svg {
+	width: 100%;
+	height: 100%;
+	transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Ефекти ховеру на іконку (тільки якщо меню не відкрите) */
+.link:hover:not(.is-open),
+.link:focus-within:not(.is-open) {
+	transform: translateY(-6px);
+	color: var(--ink);
+	border-color: var(--rust-soft);
+	box-shadow: 0 16px 30px -10px var(--rust-dim);
+}
+
+.link:hover:not(.is-open) .link-icon svg {
+	transform: rotate(-6deg) scale(1.08);
+}
+
+/* Текстова підказка під іконкою */
+.link::after {
+	content: attr(data-label);
+	position: absolute;
+	top: calc(100% + 9px);
+	left: 50%;
+	transform: translateX(-50%) translateY(-3px);
+	font-size: 9px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+	opacity: 0;
+	white-space: nowrap;
+	transition: opacity 0.3s ease, transform 0.3s ease;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.link:hover:not(.is-open)::after {
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
+}
+
+/* ─── НАДІЙНЕ АБСОЛЮТНЕ МЕНЮ ────────────────────────────────────────────────── */
+.menu {
+	position: absolute;
+	top: calc(100% + 12px);
+	/* Завжди ідеально під іконкою */
+	left: 50%;
+	transform: translateX(-50%) perspective(600px) rotateX(-20deg);
+	transform-origin: top center;
+	width: 220px;
+	background: linear-gradient(170deg, #232323, #161616);
+	border: 1px solid var(--edge-strong);
+	border-radius: 8px 8px 16px 16px;
+	padding: 8px 0;
+	box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	z-index: 999;
+	transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.25s ease, visibility 0.25s;
+}
+
+/* Декоративна лінія всередині меню */
+.menu::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 16px;
+	right: 16px;
+	height: 1px;
+	background: repeating-linear-gradient(90deg, var(--rust-soft) 0 4px, transparent 4px 9px);
+}
+
+/* Показ меню: при ховері (десктоп) АБО за класом .is-open (мобільні) */
+@media (hover: hover) {
+	.link:hover .menu {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateX(-50%) perspective(600px) rotateX(0deg);
+	}
+}
+
+.link.is-open .menu {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translateX(-50%) perspective(600px) rotateX(0deg);
+}
+
+/* Анімація елементів списку */
+.menu li {
+	opacity: 0;
+	transform: translateY(-5px);
+	transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+@media (hover: hover) {
+	.link:hover .menu li {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.link.is-open .menu li {
+	opacity: 1;
+	transform: none;
+}
+
+.menu li:nth-child(1) {
+	transition-delay: 0.05s;
+}
+
+.menu li:nth-child(2) {
+	transition-delay: 0.1s;
+}
+
+.menu li:nth-child(3) {
+	transition-delay: 0.15s;
+}
+
+.menu li a {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 10px 16px;
+	text-align: left;
+	transition: background-color 0.2s ease;
+}
+
+.menu li a:hover {
+	background-color: rgba(233, 225, 210, 0.04);
+}
+
+.menu-title {
+	font-family: "Caveat", cursive;
+	font-size: 19px;
+	font-weight: 600;
+	color: var(--ink);
+	transition: color 0.2s ease;
+}
+
+.menu-sub {
+	font-size: 9.5px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+}
+
+.menu li:hover .menu-title {
+	color: var(--rust);
+}
+
+/* ─── Button area ───────────────────────────────────────────────────────────── */
 .button_transition {
-  margin: 30px 0px;
-
+	margin: 22px 0 2px;
+	min-height: 2px;
+	position: relative;
+	z-index: 1;
 }
 
-.img-container {
-  position: relative;
-  width: 70px;
-  border-radius: 50%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* ─── Footer note ─────────────────────────────────────────────────────────────── */
+.footer-note {
+	position: relative;
+	z-index: 1;
+	margin: 16px 0 0;
+	font-family: "Caveat", cursive;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--ink-faint);
+	animation: fadeUp 0.8s 0.5s both;
 }
 
-.img-container img {
+/* ─── Reduced motion ──────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
 
-  box-shadow: rgba(0, 0, 0, 0.6) 0px 4px 25px;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  transition: transform 0.4s ease-in-out;
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 }
 
-.img-container:hover img {
-  transform: translateY(-10px);
+/* ─── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+	.mark {
+		font-size: 21px;
+		left: 16px;
+		top: 14px;
+	}
+
+	.card {
+		padding: 36px 22px 26px;
+	}
+
+	.portrait {
+		width: 108px;
+		height: 108px;
+		margin-bottom: 20px;
+	}
+
+	.wordmark {
+		font-size: 42px;
+	}
+
+	.links {
+		gap: 10px;
+	}
+
+	.link {
+		width: 52px;
+		height: 52px;
+		border-radius: 14px;
+	}
+
+	.link-icon {
+		width: 20px;
+		height: 20px;
+	}
+
+	.link::after {
+		display: none;
+	}
+
+	.menu {
+		width: 190px;
+	}
 }
 
-/* --- Підменю --- */
-.submenu {
+@media (max-width: 360px) {
+	.links {
+		gap: 7px;
+	}
 
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%) scaleY(0);
-  transform-origin: top;
-  background: #000000;
-  border-radius: 10px;
-  padding: 10px 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  box-shadow: rgba(0, 0, 0, 0.6) 0px 8px 25px;
-  z-index: 100;
-  min-width: 200px;
-  transition: transform 0.3s ease-in-out;
-}
-
-.submenu li {
-
-  padding: 10px 15px;
-  white-space: nowrap;
-}
-
-.submenu li a {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  font-family: "Oswald", sans-serif;
-}
-
-.submenu li:hover {
-
-  background-color: #161616;
-}
-
-/* показуємо підменю при наведенні */
-.telegram .submenu {
-  left: auto;
-  right: 120%;
-
-  top: 50%;
-  transform: translateY(-50%) scaleY(0);
-  transform-origin: right;
-}
-
-.telegram:hover .submenu {
-  transform: translateY(-50%) scaleY(1);
-}
-
-
-.tiktok .submenu {
-  left: 120%;
-  right: auto;
-
-  top: 50%;
-  transform: translateY(-50%) scaleY(0);
-  transform-origin: right;
-}
-
-.tiktok:hover .submenu {
-  transform: translateY(-50%) scaleY(1);
-}
-
-
-
-@media (max-width: 768px) {
-
-  .telegram .submenu,
-  .tiktok .submenu {
-    left: 50%;
-    right: auto;
-    top: 100%;
-    /* під кнопкою */
-    transform: translateX(-50%) scaleY(0);
-    /* сховане за замовчуванням */
-    transform-origin: top;
-    transition: transform 0.3s ease-in-out;
-  }
-
-  .telegram:hover .submenu,
-  .tiktok:hover .submenu {
-    transform: translateX(-50%) scaleY(1);
-    /* показуємо при наведенні */
-  }
-
-  .submenu {
-    position: absolute;
-    background: #000000;
-    border-radius: 10px;
-    padding: 10px 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    box-shadow: rgba(0, 0, 0, 0.6) 0px 8px 25px;
-    z-index: 100;
-    min-width: 100px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  body {
-    padding: 10px;
-  }
-
-  .nevymovna-logo {
-    margin-top: 10px;
-  }
-
-  .img-container {
-    width: 50px;
-    height: 50px;
-
-  }
-
-  .content {
-    width: 100%;
-    max-width: 100%;
-    padding: 15px;
-    height: auto;
-  }
-
-  li {
-    padding: 5px 20px;
-    font-size: 14px;
-  }
-
-  .social-networks {
-    width: 100%;
-    margin: 15px auto;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-
-  .button-29 {
-    height: 30px;
-    font-size: 13px;
-    padding: 10px 12px;
-  }
-
-  .logo {
-    margin-top: 15px;
-    height: 30px;
-  }
-
-  .button_transition {
-    margin: 20px 0px;
-  }
-}
-
-
-
-
-.tree {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 100px;
-  height: auto;
-  z-index: 1;
-  pointer-events: none;
-  width: 130px;
-}
-
-
-
-
-
-#snow-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9999;
-  overflow: hidden;
-}
-
-
-.snowflake {
-  position: absolute;
-  top: -10px;
-  color: #ffffff;
-  font-size: 12px;
-  opacity: 0.8;
-  user-select: none;
-  animation: fall linear infinite;
-}
-
-
-@keyframes fall {
-  to {
-    transform: translateY(100vh);
-    opacity: 0;
-  }
+	.link {
+		width: 47px;
+		height: 47px;
+	}
 }

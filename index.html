@@ -4,131 +4,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="./image/icons.png" type="image/x-icon">
-    <title>Nevymovna info</title>
-    <link rel="stylesheet" href="reset.css">
+    <link rel="icon" href="./image/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="./image/favicon-64.png" type="image/png" sizes="64x64">
+    <title>nevymovna</title>
     <link rel="stylesheet" href="style.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Oxanium:wght@200..800&display=swap"
-        rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Oxanium:wght@200..800&family=Pacifico&family=Tiny5&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500..700&family=Manrope:wght@300..800&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
-    <h1 class="title-logo">
-        nevymovna
-    </h1>
-    <div id="snow-container"></div>
 
-    <div class="content">
+    <canvas id="bg-canvas"></canvas>
 
-        <img class="nevymovna-logo" src="./image/nevymovna.jpg" alt="nevymovna" class="nevymovna-logo">
-        <div class="logo">nevymovna</div>
+    <main class="stage">
 
-        <div class="social-networks">
+        <header class="mark">nevymovna</header>
 
-            <div class="img-container telegram">
+        <section class="card" id="card">
 
-
-                <img src="./image/tg.png" alt="">
-
-
-                <ul class="submenu">
-                    <li><a rel="nofollow" target="_blank" title="Telegram nevymovna" onclick="fbq('track', 'Contact');"
-                            href="https://t.me/nevymovna">nevymovna</a></li>
-                    <li><a rel="nofollow" target="_blank" title="Telegram nevymovnaa" onclick="fbq('track', 'Contact');"
-                            href="https://t.me/nevymovnaa">тексти/акорди</a></li>
-                    <li><a rel="nofollow" target="_blank" title="Telegram mindless poetry"
-                            onclick="fbq('track', 'Contact');" href="https://t.me/vaxhhkmupoetry">mindless poetry</a>
-                    </li>
-                </ul>
+            <div class="card-decor-clip" aria-hidden="true">
+                <svg class="ink-trace" viewBox="0 0 460 90" preserveAspectRatio="none">
+                    <path class="ink-trace__path" d="M10 55 C 50 20, 90 75, 130 40 S 200 15, 230 50
+                        270 80, 310 35 S 380 20, 410 55 430 70, 450 50" />
+                </svg>
             </div>
-            <a rel="nofollow" target="_blank" title="Instagram" onclick="fbq('track', 'Contact');"
-                href="https://www.instagram.com/vaxhhkmu?igsh=MXgybDFsMDBzcW8wMQ==">
-                <div class="img-container">
-                    <img src="./image/instagram.png" alt=""
-                        onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
-                </div>
-            </a>
 
-
-            <!-- <a rel="nofollow" target="_blank" title="Viber" onclick="fbq('track', 'Contact');"
-                href="viber://add?number=380979730594">
-                <div class="img-container">
-                    <img src="./image/viber.png" alt=""
-                        onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
-                </div>
-
-            </a> -->
-
-            <a rel="nofollow" target="_blank" title="Youtube Music" onclick="fbq('track', 'Contact');"
-                href="https://music.youtube.com/watch?v=cGExBuOWM8w">
-                <div class="img-container">
-                    <img src="./image/youtube_music.png" alt=""
-                        onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
-                </div>
-
-            </a>
-            <div class="img-container tiktok">
-                <img src="./image/tiktok.png" alt="TikTok">
-
-                <ul class="submenu">
-                    <li><a rel="nofollow" target="_blank" title="TikTok nevymovna" onclick="fbq('track', 'Contact');"
-                            href="https://www.tiktok.com/@nevymovna">nevymovna</a></li>
-                    <li><a rel="nofollow" target="_blank" title="TikTok невимовна музика"
-                            onclick="fbq('track', 'Contact');" href="https://www.tiktok.com/@vaxmiard">Дрю</a></li>
-
-                </ul>
+            <div class="portrait">
+                <img src="./image/nevymovna.jpg" alt="nevymovna">
             </div>
-            <!-- <a rel="nofollow" target="_blank" title="GitHub" onclick="fbq('track', 'Contact');"
-                href="https://github.com/Mishkanchik">
-                <div class="img-container">
-                    <img src="./image/GitHub.png" alt=""
-                        onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+
+            <p class="eyebrow">слова, що не вміщаються в голос</p>
+            <h1 class="wordmark">nevymovna</h1>
+
+            <div class="rule"><span>знайти тут</span></div>
+
+            <nav class="links">
+
+                <div class="link telegram" data-key="telegram" data-label="Telegram" tabindex="0">
+                    <span class="link-icon"></span>
+                    <ul class="menu">
+                        <li><a rel="nofollow" target="_blank" title="Telegram nevymovna"
+                                onclick="fbq('track', 'Contact');" href="https://t.me/nevymovna">
+                                <span class="menu-title">nevymovna</span>
+                                <span class="menu-sub">основний канал</span>
+                            </a></li>
+                        <li><a rel="nofollow" target="_blank" title="Telegram nevymovnaa"
+                                onclick="fbq('track', 'Contact');" href="https://t.me/nevymovnaa">
+                                <span class="menu-title">тексти / акорди</span>
+                                <span class="menu-sub">слова й музика</span>
+                            </a></li>
+                        <li><a rel="nofollow" target="_blank" title="Telegram mindless poetry"
+                                onclick="fbq('track', 'Contact');" href="https://t.me/vaxhhkmupoetry">
+                                <span class="menu-title">mindless poetry</span>
+                                <span class="menu-sub">вірші без фільтру</span>
+                            </a></li>
+                    </ul>
                 </div>
 
-            </a> -->
-            <!-- <a rel="nofollow" target="_blank" title="Steam" onclick="fbq('track', 'Contact');"
-                href="https://steamcommunity.com/profiles/76561199496413147/">
-                <div class="img-container">
-                    <img src="./image/steam.png" alt=""
-                        onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                <a class="link-bare" rel="nofollow" target="_blank" title="Instagram" onclick="fbq('track', 'Contact');"
+                    href="https://www.instagram.com/vaxhhkmu?igsh=MXgybDFsMDBzcW8wMQ==">
+                    <div class="link" data-key="instagram" data-label="Instagram">
+                        <span class="link-icon"></span>
+                    </div>
+                </a>
+
+                <a class="link-bare" rel="nofollow" target="_blank" title="Youtube Music"
+                    onclick="fbq('track', 'Contact');" href="https://music.youtube.com/watch?v=cGExBuOWM8w">
+                    <div class="link" data-key="youtubeMusic" data-label="YouTube Music">
+                        <span class="link-icon"></span>
+                    </div>
+                </a>
+
+                <div class="link tiktok" data-key="tiktok" data-label="TikTok" tabindex="0">
+                    <span class="link-icon"></span>
+                    <ul class="menu">
+                        <li><a rel="nofollow" target="_blank" title="TikTok nevymovna"
+                                onclick="fbq('track', 'Contact');" href="https://www.tiktok.com/@nevymovna">
+                                <span class="menu-title">nevymovna</span>
+                                <span class="menu-sub">основний акаунт</span>
+                            </a></li>
+                        <li><a rel="nofollow" target="_blank" title="TikTok невимовна музика"
+                                onclick="fbq('track', 'Contact');" href="https://www.tiktok.com/@vaxmiard">
+                                <span class="menu-title">Дрю</span>
+                                <span class="menu-sub">за кадром</span>
+                            </a></li>
+                    </ul>
                 </div>
 
-            </a> -->
+            </nav>
 
-            <!-- <img class="tree" src="./image/tree.gif" alt="Christmas Tree"> -->
-        </div>
+            <div class="button_transition"></div>
 
-        <div class="button_transition">
+            <p class="footer-note">nevymovna · з морозом у грудях</p>
 
-            <!-- <a rel="nofollow" target="_blank" href="https://maps.app.goo.gl/iuYannPc1XXs31pw5">
-                <button class="button-29" role="button" rel="nofollow" target="_blank" >
-                    MY HOME
-                </button>
-            </a> -->
+        </section>
 
-            <!-- <a rel="nofollow" target="_blank" href="/">
-                        <button class="button-29" role="button" rel="nofollow" target="_blank" href="/">
-                            офіційний сайт
-                        </button>
-                    </a>
-                    <a rel="nofollow" target="_blank" href="/">
-                        <button class="button-29" role="button" rel="nofollow" target="_blank" href="/">
-                            офіційний сайт
-                        </button>
-                    </a> -->
-        </div>
-    </div>
-    <script src="./script.js"></script>
+    </main>
+
+    <script type="module" src="./script.js"></script>
 </body>
 
 </html>

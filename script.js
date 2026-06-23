@@ -1,24 +1,99 @@
-const snowContainer = document.getElementById("snow-container");
-const maxSnowflakes = 50; // максимальна кількість сніжинок на екрані
+import { ICONS } from './image/icons.js';
 
-function createSnowflake() {
-  // якщо сніжинок уже достатньо — не додаємо нову
-  if (snowContainer.childElementCount >= maxSnowflakes) return;
+/* ─── Inject the custom icon set into each link ──────────────────────────────── */
+document.querySelectorAll('.link').forEach((el) => {
+  const key = el.dataset.key;
+  const slot = el.querySelector('.link-icon');
+  if (slot && ICONS[key]) slot.innerHTML = ICONS[key];
+});
 
-  const snowflake = document.createElement("div");
-  snowflake.classList.add("snowflake");
-  snowflake.textContent = "❅";
-  snowflake.style.left = Math.random() * window.innerWidth + "px";
-  snowflake.style.animationDuration = "8s"; // постійна швидкість падіння
-  snowflake.style.fontSize = Math.random() * 10 + 10 + "px";
-  snowflake.style.opacity = Math.random();
+/* ─── Floating particle background ───────────────────────────────────────────── */
+(function initParticles() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  const COLORS = ['#d4794a', '#8a7cf0', '#7a8a6f', '#4fc8e0', '#e9e1d2'];
+  let particles = [];
 
-  snowContainer.appendChild(snowflake);
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
 
-  snowflake.addEventListener("animationend", () => {
-    snowflake.remove();
+  function createParticles() {
+    const count = window.innerWidth < 480 ? 38 : 65;
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.2,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.22,
+      alpha: Math.random() * 0.45 + 0.06,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H;
+      if (p.y > H) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + Math.round(p.alpha * 255).toString(16).padStart(2, '0');
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  createParticles();
+  draw();
+  window.addEventListener('resize', () => {
+    resize();
+    createParticles();
   });
-}
+})();
 
-// створюємо сніжинки поступово
-setInterval(createSnowflake, 100);
+/* ─── Submenu Logic ──────────────────────────────────────────────────────────── */
+(function initMenus() {
+  const linksWithMenu = document.querySelectorAll('.link:has(.menu)');
+
+  linksWithMenu.forEach((link) => {
+    // Для тач-пристроїв перемикаємо клас за кліком
+    link.addEventListener('click', (e) => {
+      // Якщо клікнули безпосередньо по посиланню всередині меню — переходимо
+      if (e.target.closest('.menu a')) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const isOpen = link.classList.contains('is-open');
+
+      // Закриваємо всі інші відкриті меню
+      linksWithMenu.forEach((l) => l.classList.remove('is-open'));
+
+      if (!isOpen) {
+        link.classList.add('is-open');
+      }
+    });
+  });
+
+  // Глобальне закриття при кліку за межами активних меню
+  document.addEventListener('click', () => {
+    linksWithMenu.forEach((l) => l.classList.remove('is-open'));
+  });
+
+  // Закриття по Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      linksWithMenu.forEach((l) => l.classList.remove('is-open'));
+    }
+  });
+})();
