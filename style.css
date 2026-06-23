@@ -125,7 +125,7 @@ body::after {
 .card {
 	position: relative;
 	width: min(480px, 92vw);
-	padding: 44px 36px 34px;
+	padding: 44px 32px 34px;
 	text-align: center;
 	background: linear-gradient(170deg, var(--panel-2) 0%, var(--panel) 100%);
 	border: 1px solid var(--edge);
@@ -133,8 +133,7 @@ body::after {
 	box-shadow:
 		0 36px 90px -16px rgba(0, 0, 0, 0.8),
 		0 0 0 1px rgba(255, 255, 255, 0.015) inset;
-	/* КРИТИЧНО: Прибрано overflow: hidden, щоб випадаюче меню не обрізалося */
-	overflow: visible;
+	overflow: hidden;
 	animation: cardIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -280,19 +279,56 @@ body::after {
 	position: relative;
 	z-index: 3;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
-	gap: 16px;
-	margin: 0 0 6px;
+	gap: 24px 16px;
+	margin: 0 auto 6px;
+	max-width: 380px;
 }
 
-.link-bare {
-	display: block;
+.link-item {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 11px;
+	width: 64px;
+	cursor: pointer;
+	animation: fadeUp 0.6s both;
+}
+
+.links>*:nth-child(1) {
+	animation-delay: 0.34s;
+}
+
+.links>*:nth-child(2) {
+	animation-delay: 0.38s;
+}
+
+.links>*:nth-child(3) {
+	animation-delay: 0.42s;
+}
+
+.links>*:nth-child(4) {
+	animation-delay: 0.46s;
+}
+
+.links>*:nth-child(5) {
+	animation-delay: 0.50s;
+}
+
+.links>*:nth-child(6) {
+	animation-delay: 0.54s;
+}
+
+.links>*:nth-child(7) {
+	animation-delay: 0.58s;
 }
 
 .link {
 	position: relative;
-	width: 60px;
-	height: 60px;
+	width: 58px;
+	height: 58px;
 	border-radius: 16px;
 	display: flex;
 	align-items: center;
@@ -300,34 +336,18 @@ body::after {
 	background: rgba(233, 225, 210, 0.035);
 	border: 1px solid var(--edge);
 	color: var(--ink-dim);
-	cursor: pointer;
 	transition:
 		transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
 		border-color 0.3s ease,
+		background-color 0.3s ease,
 		color 0.3s ease,
-		box-shadow 0.3s ease;
-	animation: fadeUp 0.6s both;
-}
-
-.links>*:nth-child(1) {
-	animation-delay: 0.36s;
-}
-
-.links>*:nth-child(2) {
-	animation-delay: 0.42s;
-}
-
-.links>*:nth-child(3) {
-	animation-delay: 0.48s;
-}
-
-.links>*:nth-child(4) {
-	animation-delay: 0.54s;
+		box-shadow 0.3s ease,
+		opacity 0.3s ease;
 }
 
 .link-icon {
-	width: 23px;
-	height: 23px;
+	width: 22px;
+	height: 22px;
 	display: flex;
 	pointer-events: none;
 }
@@ -338,152 +358,102 @@ body::after {
 	transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Ефекти ховеру на іконку (тільки якщо меню не відкрите) */
-.link:hover:not(.is-open),
-.link:focus-within:not(.is-open) {
+.link-item:hover .link,
+.link-item:focus-visible .link {
 	transform: translateY(-6px);
 	color: var(--ink);
 	border-color: var(--rust-soft);
-	box-shadow: 0 16px 30px -10px var(--rust-dim);
+	background: rgba(212, 121, 74, 0.08);
+	box-shadow:
+		0 16px 30px -10px var(--rust-dim),
+		0 0 0 1px var(--rust-dim) inset;
 }
 
-.link:hover:not(.is-open) .link-icon svg {
+.link-item:hover .link-icon svg,
+.link-item:focus-visible .link-icon svg {
 	transform: rotate(-6deg) scale(1.08);
 }
 
-/* Текстова підказка під іконкою */
-.link::after {
-	content: attr(data-label);
-	position: absolute;
-	top: calc(100% + 9px);
-	left: 50%;
-	transform: translateX(-50%) translateY(-3px);
-	font-size: 9px;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
+/* Назва акаунта — тиха за замовчуванням, "підсвічується" при увазі */
+.link-label {
+	position: relative;
+	font-family: "Caveat", cursive;
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: 0.01em;
 	color: var(--ink-faint);
-	opacity: 0;
 	white-space: nowrap;
-	transition: opacity 0.3s ease, transform 0.3s ease;
-	pointer-events: none;
-	z-index: 2;
+	transition: color 0.35s ease, text-shadow 0.35s ease, transform 0.35s ease;
 }
 
-.link:hover:not(.is-open)::after {
-	opacity: 1;
-	transform: translateX(-50%) translateY(0);
-}
-
-/* ─── НАДІЙНЕ АБСОЛЮТНЕ МЕНЮ ────────────────────────────────────────────────── */
-.menu {
-	position: absolute;
-	top: calc(100% + 12px);
-	/* Завжди ідеально під іконкою */
-	left: 50%;
-	transform: translateX(-50%) perspective(600px) rotateX(-20deg);
-	transform-origin: top center;
-	width: 220px;
-	background: linear-gradient(170deg, #232323, #161616);
-	border: 1px solid var(--edge-strong);
-	border-radius: 8px 8px 16px 16px;
-	padding: 8px 0;
-	box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85);
-	opacity: 0;
-	visibility: hidden;
-	pointer-events: none;
-	z-index: 999;
-	transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.25s ease, visibility 0.25s;
-}
-
-/* Декоративна лінія всередині меню */
-.menu::before {
+.link-label::after {
 	content: "";
 	position: absolute;
-	top: 0;
-	left: 16px;
-	right: 16px;
+	left: 50%;
+	bottom: -7px;
+	width: 0;
 	height: 1px;
-	background: repeating-linear-gradient(90deg, var(--rust-soft) 0 4px, transparent 4px 9px);
+	background: linear-gradient(90deg, transparent, var(--rust), transparent);
+	transform: translateX(-50%);
+	transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Показ меню: при ховері (десктоп) АБО за класом .is-open (мобільні) */
-@media (hover: hover) {
-	.link:hover .menu {
-		opacity: 1;
-		visibility: visible;
-		pointer-events: auto;
-		transform: translateX(-50%) perspective(600px) rotateX(0deg);
-	}
-}
-
-.link.is-open .menu {
-	opacity: 1;
-	visibility: visible;
-	pointer-events: auto;
-	transform: translateX(-50%) perspective(600px) rotateX(0deg);
-}
-
-/* Анімація елементів списку */
-.menu li {
-	opacity: 0;
-	transform: translateY(-5px);
-	transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-@media (hover: hover) {
-	.link:hover .menu li {
-		opacity: 1;
-		transform: none;
-	}
-}
-
-.link.is-open .menu li {
-	opacity: 1;
-	transform: none;
-}
-
-.menu li:nth-child(1) {
-	transition-delay: 0.05s;
-}
-
-.menu li:nth-child(2) {
-	transition-delay: 0.1s;
-}
-
-.menu li:nth-child(3) {
-	transition-delay: 0.15s;
-}
-
-.menu li a {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-	padding: 10px 16px;
-	text-align: left;
-	transition: background-color 0.2s ease;
-}
-
-.menu li a:hover {
-	background-color: rgba(233, 225, 210, 0.04);
-}
-
-.menu-title {
-	font-family: "Caveat", cursive;
-	font-size: 19px;
-	font-weight: 600;
-	color: var(--ink);
-	transition: color 0.2s ease;
-}
-
-.menu-sub {
-	font-size: 9.5px;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	color: var(--ink-faint);
-}
-
-.menu li:hover .menu-title {
+.link-item:hover .link-label,
+.link-item:focus-visible .link-label {
 	color: var(--rust);
+	text-shadow: 0 0 16px var(--rust-dim), 0 0 2px var(--rust-soft);
+	transform: translateY(-2px);
+}
+
+.link-item:hover .link-label::after,
+.link-item:focus-visible .link-label::after {
+	width: 100%;
+}
+
+.link-item:focus-visible {
+	outline: none;
+}
+
+.link-item:focus-visible .link {
+	box-shadow:
+		0 0 0 2px var(--rust-soft),
+		0 16px 30px -10px var(--rust-dim);
+}
+
+/* ─── Secondary links ─────────────────────────────────────────────────────── */
+.link-item[data-secondary] .link {
+	opacity: 0.6;
+}
+
+.link-item[data-secondary]:hover .link,
+.link-item[data-secondary]:focus-visible .link {
+	opacity: 1;
+	transform: translateY(-6px);
+	color: var(--ink);
+	border-color: rgba(138, 124, 240, 0.5);
+	background: rgba(138, 124, 240, 0.08);
+	box-shadow:
+		0 16px 30px -10px rgba(138, 124, 240, 0.2),
+		0 0 0 1px rgba(138, 124, 240, 0.15) inset;
+}
+
+.link-item[data-secondary]:hover .link-label,
+.link-item[data-secondary]:focus-visible .link-label {
+	color: var(--violet);
+	text-shadow: 0 0 16px rgba(138, 124, 240, 0.2), 0 0 2px rgba(138, 124, 240, 0.4);
+	transform: translateY(-2px);
+}
+
+.link-item[data-secondary]:hover .link-label::after,
+.link-item[data-secondary]:focus-visible .link-label::after {
+	width: 100%;
+	background: linear-gradient(90deg, transparent, var(--violet), transparent);
+}
+
+.link-item[data-secondary]:focus-visible .link {
+	box-shadow:
+		0 0 0 2px rgba(138, 124, 240, 0.5),
+		0 16px 30px -10px rgba(138, 124, 240, 0.2);
 }
 
 /* ─── Button area ───────────────────────────────────────────────────────────── */
@@ -541,36 +511,42 @@ body::after {
 	}
 
 	.links {
-		gap: 10px;
+		gap: 18px 10px;
+		max-width: 320px;
+	}
+
+	.link-item {
+		width: 56px;
+		gap: 8px;
 	}
 
 	.link {
-		width: 52px;
-		height: 52px;
+		width: 50px;
+		height: 50px;
 		border-radius: 14px;
 	}
 
 	.link-icon {
-		width: 20px;
-		height: 20px;
+		width: 19px;
+		height: 19px;
 	}
 
-	.link::after {
-		display: none;
-	}
-
-	.menu {
-		width: 190px;
+	.link-label {
+		font-size: 13px;
 	}
 }
 
 @media (max-width: 360px) {
 	.links {
-		gap: 7px;
+		gap: 14px 6px;
+	}
+
+	.link-item {
+		width: 50px;
 	}
 
 	.link {
-		width: 47px;
-		height: 47px;
+		width: 46px;
+		height: 46px;
 	}
 }
